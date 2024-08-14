@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:magician_ai/wand_ui/theme/tokens/tokens.dart';
-import 'package:magician_ai/wand_ui/utils/extensions/modifiers.dart';
-import 'package:magician_ai/wand_ui/utils/modifiers/linear_gradient.dart';
+import 'package:magician_ai/common/wand_ui/theme/tokens.dart';
+import 'package:magician_ai/common/wand_ui/utils/extensions/modifiers.dart';
+import 'package:magician_ai/common/wand_ui/utils/modifiers/linear_gradient.dart';
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';
 
@@ -14,12 +14,11 @@ class MainInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final card = CardSpecUtility.self;
-    final button = ButtonSpecUtility.self;
 
     return RxBlankCard(
       style: Style(
         card.container.borderRadius.all.ref($wand.radius.radius4),
-        card.container.color.ref($wand.color.black()),
+        card.container.color.ref($wand.color.black),
         card.container.padding.all.ref($wand.space.space4),
         card.flex.mainAxisSize.min(),
         card.flex.crossAxisAlignment.start(),

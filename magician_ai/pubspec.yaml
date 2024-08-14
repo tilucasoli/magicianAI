@@ -20,6 +20,12 @@ dependencies:
     path: packages/mix/packages/mix
   remix:
     path: packages/mix/packages/remix
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.2.3
+  langchain: ^0.7.4
+  langchain_community: ^0.3.0
+  langchain_ollama: ^0.3.0
+
 
 dev_dependencies:
   flutter_test:
@@ -30,3 +36,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/

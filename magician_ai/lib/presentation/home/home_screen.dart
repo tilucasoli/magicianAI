@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mix/mix.dart';
 
-import '../../wand_ui/components/main_text_field.dart';
-import '../../wand_ui/theme/tokens/tokens.dart';
+import '../../common/wand_ui/components/main_text_field.dart';
+import '../../common/wand_ui/theme/tokens.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           'RemixGen',
           style: Style(
             $text.style.ref($wand.text.semibold64),
-            $text.style.color.ref($wand.color.black()),
+            $text.style.color.ref($wand.color.black),
             $text.style.fontWeight(FontWeight.w800),
           ),
         ),
@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
           style: Style(
             $text.style.ref($wand.text.regular24),
             $text.style.fontWeight.bold(),
-            $text.style.color.ref($wand.color.black()),
+            $text.style.color.ref($wand.color.black),
           ),
         ),
         SizedBox(height: 60),

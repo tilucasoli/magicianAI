@@ -7,15 +7,16 @@ import 'package:mix/mix.dart';
 class WColorTokens {
   WColorTokens();
 
-  final _blackSwatch = ColorSwatchToken.scale('--black', 6);
+  final black = ColorToken('--black');
+  final _accentSwatch = ColorSwatchToken.scale('--accent', 2);
   final _whiteSwatch = ColorSwatchToken.scale('--white', 6);
 
   ColorToken white([int? step]) {
     return step == null ? _whiteSwatch : _whiteSwatch[step];
   }
 
-  ColorToken black([int? step]) {
-    return step == null ? _blackSwatch : _blackSwatch[step];
+  ColorToken accent([int? step]) {
+    return step == null ? _accentSwatch : _accentSwatch[step];
   }
 }
 
@@ -25,19 +26,8 @@ class WColors {
   const WColors(this.swatch);
 
   static const white = WColors(_white);
-  static const black = WColors(_black);
-
-  static const _black = ColorSwatch(
-    0xFF18181B,
-    {
-      1: Color(0xFF18181B),
-      2: Color(0xCC18181B),
-      3: Color(0x6618181B),
-      4: Color(0x3318181B),
-      5: Color(0x1918181B),
-      6: Color(0x0C18181B),
-    },
-  );
+  static const black = Color(0xFF171717);
+  static const accent = WColors(_accent);
 
   static const _white = ColorSwatch(
     0xFFFFFFFF,
@@ -50,16 +40,26 @@ class WColors {
       6: Color(0x0CFFFFFF),
     },
   );
+
+  static const _accent = ColorSwatch(
+    0xFF6A4CFF,
+    {
+      1: Color(0xFF6A4CFF),
+      2: Color(0xFF9580FF),
+    },
+  );
 }
 
 Map<ColorToken, Color> mapColorWandTokens({
-  required WColors black,
+  required Color black,
   required WColors white,
+  required WColors accent,
 }) {
   final remix = WColorTokens();
 
   return {
-    remix._blackSwatch: black.swatch,
+    remix.black: black,
+    remix._accentSwatch: accent.swatch,
     remix._whiteSwatch: white.swatch,
   };
 }

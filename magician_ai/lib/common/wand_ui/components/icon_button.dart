@@ -3,7 +3,7 @@ import 'package:mix/mix.dart';
 
 import 'package:remix/remix.dart';
 
-import '../theme/tokens/tokens.dart';
+import '../theme/tokens.dart';
 
 class WandIconButton extends StatelessWidget {
   final IconData icon;
@@ -21,7 +21,7 @@ class WandIconButton extends StatelessWidget {
 
     return RxBlankButton(
       label: '',
-      onPressed: () {},
+      onPressed: onPressed,
       iconLeft: icon,
       style: Style(
         button.flex.row(),

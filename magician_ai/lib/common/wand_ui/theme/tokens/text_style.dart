@@ -45,10 +45,10 @@ Map<TextStyleToken, TextStyle> mapTextStyleWandTokens() {
 
   final regular16 = GoogleFonts.inter(
     textStyle: const TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      letterSpacing: 0.4,
-    ),
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+        letterSpacing: 0.1,
+        height: 1.5),
   );
 
   final regular24 = GoogleFonts.inter(

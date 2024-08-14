@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:mix/mix.dart';
 
-import '../theme/tokens/tokens.dart';
+import '../theme/tokens.dart';
 
 class WandDropdown extends StatelessWidget {
   const WandDropdown({Key? key}) : super(key: key);
