@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:magician_ai/common/wand_ui/components/avatar.dart';
-import 'package:magician_ai/common/wand_ui/utils/extensions/modifiers.dart';
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';
 
 import '../../../common/wand_ui/theme/tokens.dart';
-
 class ChatBubbleType extends Variant {
   const ChatBubbleType(String value) : super('chatBubble.$value');
 
@@ -27,6 +24,35 @@ class ChatBubble extends StatelessWidget {
     required this.icon,
     required this.message,
   });
+
+  @override
+  Widget build(BuildContext context) {
+    final avatar = WandAvatar(
+      child: loading
+          ? RxSpinnerSpecWidget(
+              spec: SpinnerSpec(color: $wand.color.white().resolve(context)),
+            )
+          : icon,
+      type: type == ChatBubbleType.ai ? WAvatarType.ai : WAvatarType.user,
+    );
+
+    return StyledFlex(
+      style: _style().applyVariant(type),
+      direction: Axis.horizontal,
+      children: type == ChatBubbleType.ai
+          ? [
+              avatar,
+              StyledText(message),
+            ]
+          : [
+              Box(
+                inherit: true,
+                child: StyledText(message),
+              ),
+              avatar,
+            ],
+    );
+  }
 
   Style _style() {
     const ai = ChatBubbleType.ai;
@@ -50,37 +76,6 @@ class ChatBubble extends StatelessWidget {
       $text.style.color.ref($wand.color.white(2)),
       $flex.gap.ref($wand.space.space4),
       $flex.crossAxisAlignment.start(),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final avatar = WandAvatar(
-      child: loading
-          ? RxSpinnerSpecWidget(
-              spec: SpinnerSpec(color: $wand.color.white().resolve(context)),
-            )
-          : icon,
-      type: type == ChatBubbleType.ai ? WAvatarType.ai : WAvatarType.user,
-    );
-
-    final children = type == ChatBubbleType.ai
-        ? [
-            avatar,
-            StyledText(message),
-          ]
-        : [
-            Box(
-              inherit: true,
-              child: StyledText(message),
-            ),
-            avatar,
-          ];
-
-    return StyledFlex(
-      style: _style().applyVariant(type),
-      direction: Axis.horizontal,
-      children: children,
     );
   }
 }

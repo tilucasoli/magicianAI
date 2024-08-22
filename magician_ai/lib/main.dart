@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:magician_ai/common/wand_ui/theme/theme.dart';
 import 'package:mix/mix.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'common/wand_ui/components/side_bar.dart';
 import 'common/wand_ui/theme/tokens.dart';
 import 'presentation/chat/chat_screen.dart';
 
@@ -37,11 +38,16 @@ class NewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: $wand.color.black.resolve(context),
-      body: Center(
-        child: SizedBox(
-          width: 700,
-          child: ChatScreen(),
-        ),
+      body: Row(
+        children: [
+          Expanded(
+            child: Container(
+              child: Center(
+                child: ChatScreen(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

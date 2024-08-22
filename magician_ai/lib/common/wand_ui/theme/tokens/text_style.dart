@@ -23,7 +23,7 @@ class WTextStyleTokens {
   final semibold48 = TextStyleToken('--semibold-48');
 
   final regular64 = TextStyleToken('--regular-64');
-  final semibold64 = TextStyleToken('--semibold-64');
+  final black64 = TextStyleToken('--semibold-64');
 }
 
 Map<TextStyleToken, TextStyle> mapTextStyleWandTokens() {
@@ -73,7 +73,7 @@ Map<TextStyleToken, TextStyle> mapTextStyleWandTokens() {
   );
 
   final regular64 = GoogleFonts.inter(
-    textStyle: const TextStyle(
+    textStyle: TextStyle(
       fontSize: 64,
       fontWeight: FontWeight.w400,
     ),
@@ -105,8 +105,11 @@ Map<TextStyleToken, TextStyle> mapTextStyleWandTokens() {
       fontWeight: FontWeight.w600,
     ),
     tokens.regular64: regular64,
-    tokens.semibold64: regular64.copyWith(
-      fontWeight: FontWeight.w600,
+    tokens.black64: GoogleFonts.inter(
+      textStyle: TextStyle(
+        fontSize: 64,
+        fontWeight: FontWeight.w900,
+      ),
     ),
   };
 }

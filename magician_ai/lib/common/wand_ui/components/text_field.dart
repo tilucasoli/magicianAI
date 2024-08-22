@@ -1,16 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:magician_ai/common/wand_ui/components/icon_button.dart';
+import 'package:magician_ai/common/wand_ui/components/button.dart';
 import 'package:magician_ai/common/wand_ui/theme/tokens.dart';
 import 'package:magician_ai/common/wand_ui/utils/extensions/modifiers.dart';
-import 'package:magician_ai/common/wand_ui/utils/modifiers/linear_gradient.dart';
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';
-
-import 'dropdown.dart';
 
 typedef TextFieldCallback = void Function(String value);
 
@@ -134,7 +130,7 @@ class _WardTextFieldState extends State<WardTextField> {
                 ),
               ),
             ),
-            WandIconButton(
+            WandButton.icon(
               icon: LucideIcons.arrowRight,
               onPressed: () {
                 _onSubmit(_controller.text);
