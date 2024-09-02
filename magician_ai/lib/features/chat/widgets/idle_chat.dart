@@ -7,14 +7,15 @@ import 'package:mix/mix.dart';
 import '../../../common/wand_ui/components/button.dart';
 
 class IdleChatController {
-  final void Function(String) handleTapOnTag;
+  final void Function(String) onTapTag;
   final tags = [
     'What is LLM?',
     'Does LobeChat support image recognition and generation?',
     'Does LobeChat support multiple AI service providers?',
+    'Create a "hello world" using dart',
   ];
 
-  IdleChatController({required this.handleTapOnTag});
+  IdleChatController({required this.onTapTag});
 }
 
 class IdleChat extends StatelessWidget {
@@ -114,7 +115,7 @@ class IdleChat extends StatelessWidget {
           children: List.generate(controller.tags.length, (i) {
             return WandButton.tag(
               label: controller.tags[i],
-              onPressed: () => controller.handleTapOnTag(controller.tags[i]),
+              onPressed: () => controller.onTapTag(controller.tags[i]),
             );
           }),
         )

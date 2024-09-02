@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   google_fonts: ^6.2.1
   lucide_icons: ^0.257.0
+  # flutter_svg: ^2.0.8
   mix_annotations:
     path: packages/mix/packages/mix_annotations
   mix_generator:
@@ -21,11 +22,30 @@ dependencies:
   remix:
     path: packages/mix/packages/remix
   flutter_riverpod: ^2.5.1
+
   go_router: ^14.2.3
   langchain: ^0.7.4
   langchain_community: ^0.3.0
   langchain_ollama: ^0.3.0
+  ollama_dart: ^0.2.1
+  bloc: ^8.1.1
+  flutter_bloc: ^8.1.1
+  flutter_markdown: ^0.7.3+1
+  markdown: ^7.2.2
+  markdown_widget: ^2.3.2+6
+  flutter_highlight: ^0.7.0
+  hydrated_bloc: ^9.1.5
+  path_provider: ^2.1.4
 
+dependency_overrides:
+  mix_annotations:
+    path: packages/mix/packages/mix_annotations
+  mix_generator:
+    path: packages/mix/packages/mix_generator
+  mix:
+    path: packages/mix/packages/mix
+  remix:
+    path: packages/mix/packages/remix
 
 dev_dependencies:
   flutter_test:

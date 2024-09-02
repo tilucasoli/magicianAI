@@ -1,54 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:magician_ai/common/wand_ui/theme/theme.dart';
-import 'package:mix/mix.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'common/wand_ui/components/side_bar.dart';
-import 'common/wand_ui/theme/tokens.dart';
-import 'presentation/chat/chat_screen.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'app/app.dart';
+import 'app/app_state.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getTemporaryDirectory(),
+  );
+
   runApp(
     ProviderScope(
-      child: const MyApp(),
+      child: BlocProvider(
+        create: (context) => AppBloc(),
+        child: const MyApp(),
+      ),
     ),
   );
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MixTheme(
-      data: WandTheme().lightTheme,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        home: NewWidget(),
-      ),
-    );
-  }
-}
-
-class NewWidget extends StatelessWidget {
-  const NewWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: $wand.color.black.resolve(context),
-      body: Row(
-        children: [
-          Expanded(
-            child: Container(
-              child: Center(
-                child: ChatScreen(),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

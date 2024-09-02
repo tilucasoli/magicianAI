@@ -96,7 +96,6 @@ class _ScaleAnimationState extends State<ScaleAnimation>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        print(_controller);
         return Transform.scale(
           scale: lerpDouble(1, widget.scale, _curved.value),
           child: child,

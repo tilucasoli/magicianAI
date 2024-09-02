@@ -3,42 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:langchain/langchain.dart';
 import 'package:langchain_ollama/langchain_ollama.dart';
 
-import '../entities/entities.dart';
+import '../domain/entities/entities.dart';
 
 abstract interface class LlmService {
   Future<Message> generateResponse(String userInput);
+  void setModel(String model);
 }
 
-class _LocalLlmServiceImpl implements LlmService {
-  final BaseLanguageModel llm;
+class LocalLlmServiceImpl implements LlmService {
+  BaseLanguageModel? llm;
   final history = ChatMessageHistory();
 
-  _LocalLlmServiceImpl(this.llm);
+  LocalLlmServiceImpl();
 
   @override
   Future<Message> generateResponse(String userInput) async {
     final conversation = ConversationChain(
-      llm: llm,
+      llm: llm!,
       memory: ConversationBufferMemory(chatHistory: history),
     );
-    print(userInput);
+
     final result = await conversation.run(userInput);
 
-    debugPrint(result);
     return Message(result, role: MessageRole.ai);
   }
 
-  // void _addMessage(Message message) {
-  //   if (message.role == ChatMessageRole.human) {
-  //     history.addHumanChatMessage(message.content);
-  //     return;
-  //   }
-  //   history.addAIChatMessage(message.content);
-  // }
+  @override
+  void setModel(String model) {
+    llm = Ollama(defaultOptions: OllamaOptions(model: model));
+  }
 }
-
-final llmServiceProvider = Provider<LlmService>(
-  (ref) => _LocalLlmServiceImpl(
-    Ollama(defaultOptions: OllamaOptions(model: 'llama3')),
-  ),
-);

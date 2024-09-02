@@ -3,17 +3,23 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:magician_ai/common/wand_ui/components/button.dart';
+import 'package:magician_ai/common/wand_ui/components/select.dart';
 import 'package:magician_ai/common/wand_ui/theme/tokens.dart';
-import 'package:magician_ai/common/wand_ui/utils/extensions/modifiers.dart';
+
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';
 
 typedef TextFieldCallback = void Function(String value);
 
 class WardTextField extends StatefulWidget {
-  const WardTextField({super.key, required this.onSubmit});
+  const WardTextField({
+    super.key,
+    required this.onSubmit,
+    required this.selectController,
+  });
 
   final TextFieldCallback onSubmit;
+  final SelectController selectController;
 
   @override
   State<WardTextField> createState() => _WardTextFieldState();
@@ -25,6 +31,7 @@ class _WardTextFieldState extends State<WardTextField> {
   late final MixWidgetStateController _pressableController;
 
   void _onSubmit(String value) {
+    if (value.isEmpty) return;
     widget.onSubmit(value);
     _controller.clear();
   }
@@ -67,7 +74,7 @@ class _WardTextFieldState extends State<WardTextField> {
           BorderRadius.vertical(top: $wand.radius.radius4.resolve(context)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 20, sigmaY: 10),
-        child: RxBlankCard(
+        child: XCard(
           style: Style(
             card.container.borderRadius.top.ref($wand.radius.radius4),
             card.container.color.ref($wand.color.white(6)),
@@ -81,31 +88,8 @@ class _WardTextFieldState extends State<WardTextField> {
             card.flex.row(),
           ),
           children: [
-            Pressable(
-              controller: _pressableController,
-              child: StyledIcon(
-                LucideIcons.sparkles,
-                style: Style(
-                  $with.linearGradient.colors([
-                    Color(0xFF8372F7),
-                    Color(0xFFC080FF),
-                  ]),
-                  $icon.color.ref($wand.color.white(2)),
-                  $icon.shadow.color.ref($wand.color.white(6)),
-                  $icon.shadow.blurRadius(0),
-                  $with.transform.scale(0.90),
-                  $with.padding.left.ref($wand.space.space1),
-                  $on.focus(
-                    $with.transform.scale(1.1),
-                    $icon.color.ref($wand.color.white()),
-                    $icon.shadow.color.ref($wand.color.white(1)),
-                    $icon.shadow.blurRadius(1),
-                  ),
-                ).animate(
-                  // curve: Curves.decelerate,
-                  duration: Duration(milliseconds: 100),
-                ),
-              ),
+            WandSelect(
+              controller: widget.selectController,
             ),
             Flexible(
               child: TextField(

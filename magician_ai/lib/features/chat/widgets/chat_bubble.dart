@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:magician_ai/common/wand_ui/components/avatar.dart';
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';
 
+import '../../../common/wand_ui/components/markdown.dart';
 import '../../../common/wand_ui/theme/tokens.dart';
+
 class ChatBubbleType extends Variant {
   const ChatBubbleType(String value) : super('chatBubble.$value');
 
@@ -29,7 +32,7 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final avatar = WandAvatar(
       child: loading
-          ? RxSpinnerSpecWidget(
+          ? XSpinnerSpecWidget(
               spec: SpinnerSpec(color: $wand.color.white().resolve(context)),
             )
           : icon,
@@ -42,12 +45,12 @@ class ChatBubble extends StatelessWidget {
       children: type == ChatBubbleType.ai
           ? [
               avatar,
-              StyledText(message),
+              Expanded(child: WandMarkdown(data: message)),
             ]
           : [
               Box(
                 inherit: true,
-                child: StyledText(message),
+                child: WandMarkdown(data: message),
               ),
               avatar,
             ],

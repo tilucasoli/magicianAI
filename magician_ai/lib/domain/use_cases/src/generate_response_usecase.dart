@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:magician_ai/domain/entities/entities.dart';
 
-import '../../services/llm_service.dart';
+import '../../../services/llm_service.dart';
 
 abstract class GenerateResponseUseCase {
   Future<Message> execute(String userInput);
@@ -18,6 +18,6 @@ class _GenerateResponseUseCaseImpl implements GenerateResponseUseCase {
   }
 }
 
-final generateResponseUseCase = Provider<GenerateResponseUseCase>(
-  (ref) => _GenerateResponseUseCaseImpl(ref.read(llmServiceProvider)),
-);
+// final generateResponseUseCase = Provider<GenerateResponseUseCase>(
+//   (ref) => _GenerateResponseUseCaseImpl(ref.read(llmServiceProvider)),
+// );

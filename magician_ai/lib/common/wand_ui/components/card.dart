@@ -13,17 +13,15 @@ class WandCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final card = CardSpecUtility.self;
-    return RxBlankCard(
+    return XCard(
       children: children,
       style: Style(
-        card.flex.column(),
-        card.flex.crossAxisAlignment.start(),
-        card.container.padding.all.ref($wand.space.space4),
-        card.container.borderRadius.all.ref($wand.radius.radius5),
-        card.container.color.ref($wand.color.white(6)),
+        $card.flex.crossAxisAlignment.start(),
+        $card.container.padding.all.ref($wand.space.space3),
+        $card.container.borderRadius.all.ref($wand.radius.radius5),
+        $card.container.color.ref($wand.color.white(6)),
         $on.hover(
-          card.container.color.ref($wand.color.white(5)),
+          $card.container.color.ref($wand.color.white(5)),
         ),
       ).animate(duration: const Duration(milliseconds: 100)),
     );

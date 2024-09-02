@@ -61,7 +61,7 @@ class WandButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return XButton.blank(
+    return XButton(
       label: label,
       onPressed: onPressed,
       iconLeft: icon,
@@ -94,12 +94,16 @@ Style _style() {
       ),
     ),
     primary(
-      button.container.color.ref($wand.color.accent()),
+      button.container.color.ref($wand.color.white(6)),
+      $on.hover(
+        button.container.color.ref($wand.color.accent()),
+      ),
       button.container.borderRadius.all.ref($wand.radius.radius5),
-      button.container.padding.all.ref($wand.space.space4),
+      button.container.padding.horizontal.ref($wand.space.space4),
+      button.container.padding.vertical.ref($wand.space.space3),
       button.label.style.ref($wand.text.semibold14),
       button.label.style.bold(),
-      button.label.style.color.ref($wand.color.white()),
+      button.label.style.color.ref($wand.color.white(2)),
       button.flex.mainAxisAlignment.center(),
     ),
 

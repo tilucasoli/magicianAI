@@ -26,11 +26,8 @@ class _MessagesBarState extends State<MessagesBar> {
     return Box(
       style: Style(
         $box.color.ref($wand.color.white(6)),
-        $with.padding.right(30),
-        $with.padding.vertical(30),
         $box.borderRadius(20),
         $box.width.infinity(),
-        $box.wrap.fractionallySizedBox(widthFactor: 0.2),
         $flex.mainAxisSize.min(),
         $flex.mainAxisAlignment.start(),
         $flex.crossAxisAlignment.start(),
