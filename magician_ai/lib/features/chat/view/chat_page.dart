@@ -5,7 +5,7 @@ import 'package:magician_ai/features/chat/view/chat_view.dart';
 import 'package:magician_ai/app/app_state.dart';
 import 'package:magician_ai/services/llm_service.dart';
 
-import '../../../services/database_services.dart';
+import '../../../repository/chat_session.dart';
 import '../bloc/chat_session_bloc.dart';
 
 class ChatPage extends StatelessWidget {

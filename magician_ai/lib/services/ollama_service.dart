@@ -13,7 +13,6 @@ class OllamaServiceImpl implements OllamaService {
   @override
   Future<List<String>> listAvailableModels() async {
     final models = await client.listModels();
-    // TODO Create a error handling for this
     return models.models!.map((e) => e.model ?? '').toList();
   }
 

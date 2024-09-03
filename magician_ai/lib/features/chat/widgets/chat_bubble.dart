@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+
 import 'package:magician_ai/common/wand_ui/components/avatar.dart';
 import 'package:mix/mix.dart';
 import 'package:remix/remix.dart';

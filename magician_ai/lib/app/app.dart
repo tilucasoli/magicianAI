@@ -11,7 +11,7 @@ import '../common/wand_ui/components/button.dart';
 import '../common/wand_ui/theme/theme.dart';
 import '../common/wand_ui/theme/tokens.dart';
 import '../features/empty/view/empty_view.dart';
-import '../services/database_services.dart';
+import '../repository/chat_session.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -63,53 +63,7 @@ class HomeView extends StatelessWidget {
       backgroundColor: $wand.color.black.resolve(context),
       body: Row(
         children: [
-          VBox(
-            style: Style(
-              $box.width(250),
-              $box.padding.top(40),
-              $box.padding.horizontal(20),
-              $box.color.ref($wand.color.white(6)),
-            ),
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: WandButton.primary(
-                  label: 'Start a new Chat',
-                  onPressed: () {
-                    bloc.add(AppEventNewChat());
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 8,
-              ),
-              Divider(
-                color: Colors.white12,
-              ),
-              BlocBuilder<AppBloc, AppState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      for (final session in state.sessions) ...[
-                        ChatOption(
-                          text: session.data.title ?? 'I DONT KNOW',
-                          isSelected: session.data.chatSessionId ==
-                              state.activeSession?.data.chatSessionId,
-                          onPress: () {
-                            bloc.add(
-                              AppEventSelectChat(
-                                chatId: session.data.chatSessionId,
-                              ),
-                            );
-                          },
-                        ),
-                      ]
-                    ],
-                  );
-                },
-              ),
-            ],
-          ),
+          Sidebar(bloc: bloc),
           Spacer(),
           Center(
             child: BlocBuilder<AppBloc, AppState>(
@@ -123,6 +77,83 @@ class HomeView extends StatelessWidget {
           Spacer(),
         ],
       ),
+    );
+  }
+}
+
+class Sidebar extends StatelessWidget {
+  const Sidebar({
+    super.key,
+    required this.bloc,
+  });
+
+  final AppBloc bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return VBox(
+      style: Style(
+        $box.width(280),
+        $box.padding.top(40),
+        $box.padding.horizontal(20),
+        $box.color.ref($wand.color.white(6)),
+      ),
+      children: [
+        SizedBox(
+          width: double.infinity,
+          child: WandButton.primary(
+            label: 'Start a new Chat',
+            onPressed: () {
+              bloc.add(AppEventNewChat());
+            },
+          ),
+        ),
+        SizedBox(
+          height: 8,
+        ),
+        Divider(
+          color: Colors.white12,
+        ),
+        HBox(
+          style: Style(
+            $flex.mainAxisAlignment.spaceBetween(),
+          ),
+          children: [
+            StyledText('Your conversations'),
+            WandButton.text(
+              label: 'clear all',
+              onPressed: () {
+                bloc.add(AppEventClearAll());
+              },
+            ),
+          ],
+        ),
+        Divider(
+          color: Colors.white12,
+        ),
+        BlocBuilder<AppBloc, AppState>(
+          builder: (context, state) {
+            return Column(
+              children: [
+                for (final session in state.sessions) ...[
+                  ChatOption(
+                    text: session.title!,
+                    isSelected: session.chatSessionId ==
+                        state.activeSession?.data.chatSessionId,
+                    onPress: () {
+                      bloc.add(
+                        AppEventSelectChat(
+                          chatId: session.chatSessionId,
+                        ),
+                      );
+                    },
+                  ),
+                ]
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }

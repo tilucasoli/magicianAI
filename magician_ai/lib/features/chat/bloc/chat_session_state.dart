@@ -1,8 +1,6 @@
 import '../../../domain/entities/src/chat_session.dart';
 import '../../../domain/entities/src/message.dart';
 
-// States
-
 final class ChatSessionState {
   final ChatSession data;
   final bool isAITyping;

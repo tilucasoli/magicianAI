@@ -18,12 +18,16 @@ class LocalLlmServiceImpl implements LlmService {
 
   @override
   Future<Message> generateResponse(String userInput) async {
+    print('User input: $userInput');
+    final messages = await history.getChatMessages();
+    print(messages.map((e) => e.contentAsString).toList());
     final conversation = ConversationChain(
       llm: llm!,
       memory: ConversationBufferMemory(chatHistory: history),
     );
 
     final result = await conversation.run(userInput);
+    print('AI output: $result');
     final message = Message()
       ..content = result
       ..role = MessageRole.ai;

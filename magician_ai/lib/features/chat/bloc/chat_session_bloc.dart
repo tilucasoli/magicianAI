@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:magician_ai/domain/entities/entities.dart';
-import 'package:magician_ai/services/database_services.dart';
+import 'package:magician_ai/repository/chat_session.dart';
 import 'package:magician_ai/services/llm_service.dart';
 
 import 'chat_session_event.dart';

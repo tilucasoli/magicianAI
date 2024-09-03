@@ -8,11 +8,11 @@ import 'package:uuid/uuid.dart';
 
 import '../domain/entities/src/chat_session.dart';
 import '../repository/chat_session.dart';
-import '../services/database_services.dart';
+import '../repository/chat_session.dart';
 import '../services/ollama_service.dart';
 
 final class AppState {
-  final List<ChatSessionState> sessions;
+  final List<ChatSession> sessions;
   final ChatSessionState? activeSession;
   final String? model;
 
@@ -23,7 +23,7 @@ final class AppState {
   });
 
   AppState copyWith({
-    List<ChatSessionState>? sessions,
+    List<ChatSession>? sessions,
     ChatSessionState? activeSession,
     String? model,
   }) {
@@ -39,6 +39,10 @@ final class AppEvent {}
 
 final class AppEventLoadSessions extends AppEvent {
   AppEventLoadSessions();
+}
+
+final class AppEventClearAll extends AppEvent {
+  AppEventClearAll();
 }
 
 final class AppEventNewChat extends AppEvent {
@@ -72,6 +76,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   AppBloc(this._chatSessionRepository) : super(AppState(sessions: [])) {
     on<AppEventLoadSessions>(_onLoadSessions);
+    on<AppEventClearAll>(_onClearAll);
     on<AppEventNewChat>(_onNewChat);
     on<AppEventStartChat>(_onStartChat);
     on<AppEventSelectChat>(_onSelectChat);
@@ -83,13 +88,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   void _onLoadSessions(
       AppEventLoadSessions event, Emitter<AppState> emit) async {
     final chatSessions = await _chatSessionRepository.loadAllChatSessions();
-    // print(chatSessions.first.messages);
 
     emit(
       state.copyWith(
-        sessions: chatSessions.map((e) => ChatSessionState(e)).toList(),
+        sessions: chatSessions.map((e) => e).toList(),
       ),
     );
+  }
+
+  void _onClearAll(AppEventClearAll event, Emitter<AppState> emit) async {
+    await _chatSessionRepository.deleteAll();
+
+    add(AppEventLoadSessions());
+    add(AppEventNewChat());
   }
 
   void _onNewChat(AppEventNewChat event, Emitter<AppState> emit) {
@@ -117,12 +128,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   }
 
   void _onSelectChat(AppEventSelectChat event, Emitter<AppState> emit) async {
-    final newChat = state.sessions
-        .firstWhere((element) => element.data.chatSessionId == event.chatId);
+    final newChat = await _chatSessionRepository.loadChatSession(event.chatId);
 
     emit(
       state.copyWith(
-        activeSession: newChat,
+        activeSession: ChatSessionState(newChat!),
       ),
     );
   }
@@ -138,9 +148,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   Future<List<String>> listAllModels() async {
     final ollamaService = OllamaServiceImpl();
     final availableModels = await ollamaService.listAvailableModels();
-    // if (state.model == null) {
-    //   model = availableModels.first;
-    // }
 
     return availableModels;
   }

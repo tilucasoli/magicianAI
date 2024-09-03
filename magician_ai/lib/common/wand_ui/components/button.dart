@@ -9,6 +9,7 @@ final class _WButtonVariant extends Variant {
   const _WButtonVariant(String value) : super(value);
 
   static const primary = _WButtonVariant('primary');
+  static const text = _WButtonVariant('text');
   static const icon = _WButtonVariant('icon');
   static const tag = _WButtonVariant('tag');
 }
@@ -59,6 +60,17 @@ class WandButton extends StatelessWidget {
         variant: _WButtonVariant.primary,
       );
 
+  factory WandButton.text({
+    required String label,
+    required VoidCallback onPressed,
+  }) =>
+      WandButton._(
+        icon: null,
+        label: label,
+        onPressed: onPressed,
+        variant: _WButtonVariant.text,
+      );
+
   @override
   Widget build(BuildContext context) {
     return XButton(
@@ -73,11 +85,11 @@ class WandButton extends StatelessWidget {
 Style _style() {
   final button = ButtonSpecUtility.self;
   final tag = _WButtonVariant.tag;
+  final text = _WButtonVariant.text;
   final icon = _WButtonVariant.icon;
   final primary = _WButtonVariant.primary;
 
   return Style(
-    // container
     button.container.borderRadius.all.ref($wand.radius.radius2),
     button.container.padding.all.ref($wand.space.space2),
 
@@ -105,6 +117,15 @@ Style _style() {
       button.label.style.bold(),
       button.label.style.color.ref($wand.color.white(2)),
       button.flex.mainAxisAlignment.center(),
+    ),
+    text(
+      button.container.color.transparent(),
+      button.container.padding.horizontal.ref($wand.space.space3),
+      $on.hover(
+        button.container.color.ref($wand.color.white(6)),
+        button.container.borderRadius.all.ref($wand.radius.radius5),
+      ),
+      button.label.style.color.ref($wand.color.accent()),
     ),
 
     // flex
