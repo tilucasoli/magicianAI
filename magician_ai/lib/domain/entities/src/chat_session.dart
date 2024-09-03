@@ -1,39 +1,41 @@
+import 'package:isar/isar.dart';
 import '../entities.dart';
 
+part 'chat_session.g.dart';
+
+@collection
 final class ChatSession {
   final List<Message> messages;
-  final bool isAITyping;
   final String? model;
   final String? title;
-  final String key;
+  @Index(unique: true)
+  final String chatSessionId;
+  final Id id = Isar.autoIncrement;
 
   ChatSession({
-    required this.key,
+    required this.chatSessionId,
     required this.messages,
-    this.isAITyping = false,
     this.model,
     this.title,
   });
 
   ChatSession copyWith({
     List<Message>? messages,
-    bool? isAITyping,
     String? model,
     String? title,
   }) {
     return ChatSession(
       messages: messages ?? this.messages,
-      isAITyping: isAITyping ?? this.isAITyping,
       model: model ?? this.model,
       title: title ?? this.title,
-      key: key,
+      chatSessionId: chatSessionId,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'chatSessionId': chatSessionId,
       'messages': messages.map((message) => message.toJson()).toList(),
-      'isAITyping': isAITyping,
       'model': model,
       'title': title,
     };

@@ -48,14 +48,16 @@ class _ChatViewState extends State<ChatView> {
           previous.activeSession != current.activeSession,
       listener: (context, state) {
         if (state.activeSession != null) {
-          context.read<ChatSessionBloc>().add(ChatSessionChangeChat(
-                key: state.activeSession!.data.key,
-                messages: state.activeSession!.data.messages,
-              ));
+          context.read<ChatSessionBloc>().add(
+                ChatSessionChangeChat(
+                  chatSessionId: state.activeSession!.data.chatSessionId,
+                ),
+              );
         }
       },
       child: BlocBuilder<ChatSessionBloc, ChatSessionState>(
           builder: (context, state) {
+        print('Reload');
         return Padding(
           padding: const EdgeInsets.only(top: 60, right: 30),
           child: Stack(
@@ -68,7 +70,7 @@ class _ChatViewState extends State<ChatView> {
                     if (state.data.messages.isNotEmpty) ...[
                       _ChatMessagesList(
                         state.data.messages,
-                        isAITyping: state.data.isAITyping,
+                        isAITyping: state.isAITyping,
                         controller: controller,
                         callbackGlobalKeys: (keys) {
                           userMessagesKeys = keys;
@@ -116,7 +118,7 @@ class _ChatMessagesListState extends State<_ChatMessagesList> {
         userMessagesKeys.add(key);
         return ChatBubble(
           key: key,
-          message: message.content,
+          message: message.content!,
           type: ChatBubbleType.user,
           icon: Image(
             image: AssetImage('assets/brain.png'),
@@ -126,8 +128,9 @@ class _ChatMessagesListState extends State<_ChatMessagesList> {
         );
       }
       return ChatBubble(
-        message: message.content,
+        message: message.content!,
         type: ChatBubbleType.ai,
+        loading: widget.isAITyping,
         icon: Image(
           image: AssetImage('assets/robot.png'),
           height: 24,

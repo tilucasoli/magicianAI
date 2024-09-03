@@ -11,6 +11,7 @@ import '../common/wand_ui/components/button.dart';
 import '../common/wand_ui/theme/theme.dart';
 import '../common/wand_ui/theme/tokens.dart';
 import '../features/empty/view/empty_view.dart';
+import '../services/database_services.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -24,15 +25,34 @@ class MyApp extends StatelessWidget {
         components: RemixComponentTheme.base(),
         child: MixTheme(
           data: WandTheme().lightTheme,
-          child: NewWidget(),
+          child: HomePage(),
         ),
       ),
     );
   }
 }
 
-class NewWidget extends StatelessWidget {
-  const NewWidget({
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(Object context) {
+    return RepositoryProvider<ChatSessionRepository>(
+      create: (_) {
+        return ChatSessionRepositoryImpl();
+      },
+      child: BlocProvider(
+        create: (context) => AppBloc(
+          RepositoryProvider.of<ChatSessionRepository>(context),
+        ),
+        child: HomeView(),
+      ),
+    );
+  }
+}
+
+class HomeView extends StatelessWidget {
+  const HomeView({
     super.key,
   });
 
@@ -72,11 +92,15 @@ class NewWidget extends StatelessWidget {
                     children: [
                       for (final session in state.sessions) ...[
                         ChatOption(
-                          text: session.data.title ?? 'IDONTKNOW',
-                          isSelected: session == state.activeSession,
+                          text: session.data.title ?? 'I DONT KNOW',
+                          isSelected: session.data.chatSessionId ==
+                              state.activeSession?.data.chatSessionId,
                           onPress: () {
                             bloc.add(
-                                AppEventSelectChat(chatId: session.data.key));
+                              AppEventSelectChat(
+                                chatId: session.data.chatSessionId,
+                              ),
+                            );
                           },
                         ),
                       ]
@@ -87,11 +111,15 @@ class NewWidget extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Center(child: BlocBuilder<AppBloc, AppState>(
-            builder: (context, state) {
-              return state.activeSession == null ? EmptyChatView() : ChatPage();
-            },
-          )),
+          Center(
+            child: BlocBuilder<AppBloc, AppState>(
+              builder: (context, state) {
+                return state.activeSession == null
+                    ? EmptyChatView()
+                    : ChatPage();
+              },
+            ),
+          ),
           Spacer(),
         ],
       ),

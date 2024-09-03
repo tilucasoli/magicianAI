@@ -3,6 +3,12 @@ import '../../../domain/entities/src/message.dart';
 
 sealed class ChatSessionEvent {}
 
+final class ChatSessionEventLoadMessages extends ChatSessionEvent {
+  final String id;
+
+  ChatSessionEventLoadMessages({required this.id});
+}
+
 final class ChatSessionEventUserSendMessage extends ChatSessionEvent {
   final String message;
 
@@ -18,11 +24,9 @@ final class ChatSessionEventUserReceiveMessage extends ChatSessionEvent {
 final class ChatSessionEventStartChat extends ChatSessionEvent {}
 
 final class ChatSessionChangeChat extends ChatSessionEvent {
-  final String key;
-  final List<Message> messages;
+  final String chatSessionId;
 
   ChatSessionChangeChat({
-    required this.key,
-    required this.messages,
+    required this.chatSessionId,
   });
 }

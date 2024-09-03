@@ -1,10 +1,13 @@
+import 'package:isar/isar.dart';
+part 'message.g.dart';
+
 enum MessageRole { user, ai, system }
 
+@embedded
 class Message {
-  final String content;
-  final MessageRole role;
-
-  const Message(this.content, {required this.role});
+  String? content;
+  @enumerated
+  MessageRole role = MessageRole.user;
 
   @override
   String toString() {

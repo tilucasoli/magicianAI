@@ -24,8 +24,10 @@ class LocalLlmServiceImpl implements LlmService {
     );
 
     final result = await conversation.run(userInput);
-
-    return Message(result, role: MessageRole.ai);
+    final message = Message()
+      ..content = result
+      ..role = MessageRole.ai;
+    return message;
   }
 
   @override

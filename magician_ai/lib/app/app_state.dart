@@ -1,9 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:magician_ai/domain/entities/entities.dart';
+import 'package:bloc/bloc.dart';
 import 'package:magician_ai/features/chat/bloc/chat_session_state.dart';
+import 'package:uuid/uuid.dart';
 
 import '../domain/entities/src/chat_session.dart';
+import '../repository/chat_session.dart';
+import '../services/database_services.dart';
 import '../services/ollama_service.dart';
 
 final class AppState {
@@ -32,6 +37,10 @@ final class AppState {
 
 final class AppEvent {}
 
+final class AppEventLoadSessions extends AppEvent {
+  AppEventLoadSessions();
+}
+
 final class AppEventNewChat extends AppEvent {
   AppEventNewChat();
 }
@@ -58,12 +67,29 @@ final class AppEventChangeModel extends AppEvent {
   AppEventChangeModel({required this.model});
 }
 
-class AppBloc extends HydratedBloc<AppEvent, AppState> {
-  AppBloc() : super(AppState(sessions: [])) {
+class AppBloc extends Bloc<AppEvent, AppState> {
+  final ChatSessionRepository _chatSessionRepository;
+
+  AppBloc(this._chatSessionRepository) : super(AppState(sessions: [])) {
+    on<AppEventLoadSessions>(_onLoadSessions);
     on<AppEventNewChat>(_onNewChat);
     on<AppEventStartChat>(_onStartChat);
-    on<AppEventSelectChat>(_onAccessChat);
+    on<AppEventSelectChat>(_onSelectChat);
     on<AppEventChangeModel>(_onChangeModel);
+
+    add(AppEventLoadSessions());
+  }
+
+  void _onLoadSessions(
+      AppEventLoadSessions event, Emitter<AppState> emit) async {
+    final chatSessions = await _chatSessionRepository.loadAllChatSessions();
+    // print(chatSessions.first.messages);
+
+    emit(
+      state.copyWith(
+        sessions: chatSessions.map((e) => ChatSessionState(e)).toList(),
+      ),
+    );
   }
 
   void _onNewChat(AppEventNewChat event, Emitter<AppState> emit) {
@@ -76,36 +102,27 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     );
   }
 
-  void _onStartChat(AppEventStartChat event, Emitter<AppState> emit) {
-    final chatKey = UniqueKey();
-    emit(
-      state.copyWith(
-        sessions: [
-          ...state.sessions,
-          ChatSessionState(
-            ChatSession(
-              messages: [
-                Message(event.message, role: MessageRole.user),
-              ],
-              key: chatKey.toString(),
-              model: event.model,
-              title: event.message,
-              isAITyping: true,
-            ),
-          ),
-        ],
-      ),
+  void _onStartChat(AppEventStartChat event, Emitter<AppState> emit) async {
+    final id = Uuid().v4();
+
+    await _chatSessionRepository.createNewChatSession(
+      id: id,
+      title: event.message,
+      model: event.model,
+      message: event.message,
     );
 
-    add(AppEventSelectChat(chatId: chatKey.toString()));
+    add(AppEventSelectChat(chatId: id.toString()));
+    add(AppEventLoadSessions());
   }
 
-  void _onAccessChat(AppEventSelectChat event, Emitter<AppState> emit) {
+  void _onSelectChat(AppEventSelectChat event, Emitter<AppState> emit) async {
+    final newChat = state.sessions
+        .firstWhere((element) => element.data.chatSessionId == event.chatId);
+
     emit(
       state.copyWith(
-        activeSession: state.sessions.firstWhere(
-          (session) => session.data.key.toString() == event.chatId,
-        ),
+        activeSession: newChat,
       ),
     );
   }
@@ -126,23 +143,5 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     // }
 
     return availableModels;
-  }
-
-  @override
-  AppState? fromJson(Map<String, dynamic> json) {
-    print('AppBloc.fromJson: $json');
-    return AppState(
-      sessions: json['sessions'] ?? [],
-      model: json['model'],
-    );
-  }
-
-  @override
-  Map<String, dynamic>? toJson(AppState state) {
-    print('AppBloc.toJson: ${state.model}');
-    return {
-      'sessions': state.sessions.map((e) => e.data.toJson()).toList(),
-      'model': state.model,
-    };
   }
 }

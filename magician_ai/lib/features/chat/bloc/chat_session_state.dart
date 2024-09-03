@@ -5,22 +5,16 @@ import '../../../domain/entities/src/message.dart';
 
 final class ChatSessionState {
   final ChatSession data;
+  final bool isAITyping;
 
-  ChatSessionState(this.data);
+  ChatSessionState(this.data)
+      : isAITyping = data.messages.last.role == MessageRole.user;
 
   ChatSessionState copyWith({
-    List<Message>? messages,
-    bool? isAITyping,
-    String? model,
-    String? title,
+    ChatSession? data,
   }) {
     return ChatSessionState(
-      data.copyWith(
-        messages: messages,
-        isAITyping: isAITyping,
-        model: model,
-        title: title,
-      ),
+      data ?? this.data,
     );
   }
 }

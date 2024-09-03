@@ -15,8 +15,7 @@ dependencies:
   # flutter_svg: ^2.0.8
   mix_annotations:
     path: packages/mix/packages/mix_annotations
-  mix_generator:
-    path: packages/mix/packages/mix_generator
+  
   mix:
     path: packages/mix/packages/mix
   remix:
@@ -28,31 +27,35 @@ dependencies:
   langchain_community: ^0.3.0
   langchain_ollama: ^0.3.0
   ollama_dart: ^0.2.1
-  bloc: ^8.1.1
+  bloc: ^8.1.4
   flutter_bloc: ^8.1.1
   flutter_markdown: ^0.7.3+1
   markdown: ^7.2.2
   markdown_widget: ^2.3.2+6
   flutter_highlight: ^0.7.0
-  hydrated_bloc: ^9.1.5
+  isar: ^3.1.0+1
+  build_runner: ^2.4.12
+  uuid: ^4.5.0
+  isar_flutter_libs: ^3.1.0+1
   path_provider: ^2.1.4
 
 dependency_overrides:
   mix_annotations:
     path: packages/mix/packages/mix_annotations
-  mix_generator:
-    path: packages/mix/packages/mix_generator
   mix:
     path: packages/mix/packages/mix
   remix:
     path: packages/mix/packages/remix
 
+
 dev_dependencies:
+  isar_generator: ^3.1.0+1
+  # mix_generator:
+  #   path: packages/mix/packages/mix_generator
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^4.0.0
-  build_runner: ^2.4.12
 
 flutter:
   uses-material-design: true
